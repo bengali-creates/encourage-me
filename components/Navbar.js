@@ -3,11 +3,12 @@ import React  from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
 import Link from "next/link"
 import { useState } from "react"
+import { useRouter } from 'next/navigation'
 
 const Navbar = () => {
   const { data: session } = useSession()
   const [dropdown, setDropdown] = useState(false)
-  console.log('dropdown', dropdown)
+  
 
   return (
     <nav className='fixed w-full flex justify-between items-center p-3 text-white backdrop-blur-xs shadow-indigo-300 shadow-lg/55'>
@@ -15,16 +16,18 @@ const Navbar = () => {
         <Link href={"/"}> Encourage Me</Link>
       </div>
       <ul className='flex space-x-4'>
-        <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <li><a href="/project">Project</a></li>
-        <li><a href="/dashboard">Dashboard</a></li>
+        <li><Link href="/">Home</Link></li>
+        <li><Link href="/about">About</Link></li>
+        <li><Link href="/contact">Contact</Link></li>
+        <li><Link href="/project">Project</Link></li>
+        <li><Link href="/dashboard">Dashboard</Link></li>
 
         {session ? (
           <>
 
-            <button id="dropdownInformationButton" onClick={()=>{setDropdown(!dropdown)}} className="rounded-full relative cursor-pointer hover:shadow-2xl hover:shadow-green-500" type="button"> <img src={session.user.image} width={30} alt="" className="rounded-full" />
+            <button id="dropdownInformationButton" onClick={()=>{setDropdown(!dropdown)}} onBlur={()=>{setTimeout(() => {setDropdown(false)
+              
+            }, 200);}} className="rounded-full relative cursor-pointer hover:shadow-2xl hover:shadow-green-500" type="button"> <img src={session.user.image} width={30} alt="" className="rounded-full" />
               
             </button>
 
@@ -36,13 +39,13 @@ const Navbar = () => {
               </div>
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformationButton">
                 <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</Link>
                 </li>
                 <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</Link>
                 </li>
                 <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</Link>
                 </li>
               </ul>
               <div className="py-2">

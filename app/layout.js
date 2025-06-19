@@ -21,19 +21,22 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Sessionwraper>
+      
         <body
-          className="relative min-h-screen antialiased"
+          className="relative  antialiased"
         >
-          <Navbar />
-          <div className="absolute inset-0 -z-10   items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)] ">
+          <div className="absolute inset-0 -z-10 items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
+          <Sessionwraper>
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-1 py-16 px-5 md:px-0 text-white container mx-auto">
+              {children}
+            </main>
+            <Fotter />
           </div>
-
-          {children}
-
-          <Fotter />
+          </Sessionwraper>
         </body>
-      </Sessionwraper>
+      
     </html>
   );
 }
