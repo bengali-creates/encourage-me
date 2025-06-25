@@ -33,7 +33,7 @@ const handler= NextAuth({
           profileimage: user.image,
           
         });
-        console.log("New user created:", newUser);
+        await newUser.save();
       }
     }
     return true;
