@@ -11,7 +11,7 @@ const Navbar = () => {
   
 
   return (
-    <nav className='fixed w-full flex justify-between items-center p-3 text-white backdrop-blur-xs shadow-indigo-300 shadow-lg/55'>
+    <nav className='fixed w-full flex justify-between items-center p-3 text-white backdrop-blur-xs shadow-indigo-300 shadow-lg/55 z-100'>
       <div className='text-2xl font-bold logo'>
         <Link href={"/"}> Encourage Me</Link>
       </div>
@@ -37,12 +37,12 @@ const Navbar = () => {
                 <div>Ho Ho Ho</div>
                 <div className="font-medium truncate">{session.user.name}</div>
               </div>
-              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformationButton">
+              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" >
                 <li>
-                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</Link>
+                  <Link href="/dashboard" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</Link>
                 </li>
                 <li>
-                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</Link>
+                  <Link href={`/${(session.user.name)}`} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Your Page</Link>
                 </li>
                 <li>
                   <Link href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</Link>
