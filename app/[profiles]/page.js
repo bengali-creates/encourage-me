@@ -1,7 +1,12 @@
+
+
 import React from 'react'
+import Payment from '@/components/Payment'
 
 const Profiles = async ({ params }) => {
-  const{ profiles } = await(params)
+  const{ profiles } = await (params)
+ 
+
   return (
 
     <div>
@@ -22,10 +27,17 @@ const Profiles = async ({ params }) => {
           <div className='text-slate-500'>I am a lazy coder</div>
           <div>18,732 members • 99 Posts • $18,270/release</div>
         </div>
-        <div className='flex justify-center mt-3'>
-          <button className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600'>Follow</button>
-          <button className='bg-gray-300 text-black px-4 py-2 rounded-lg ml-4 hover:bg-gray-400'>Message</button>
-        </div>
+        <div className='flex justify-center mt-3 gap-2'>
+         <button className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600'>Follow</button>
+         <Payment/>
+</div>
+        
+
+
+
+
+
+
       </div>
       )
 }
