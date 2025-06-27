@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
           <Sessionwraper>
           <div className="flex flex-col min-h-screen">
             <Navbar />
-            <main className="flex-1 py-16 px-5 md:px-0 text-white container mx-auto">
+            <main className="flex-1 py-16 px-5 md:px-0 text-white w-full ">
               {children}
             </main>
             <Fotter />
