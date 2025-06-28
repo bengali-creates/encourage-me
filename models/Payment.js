@@ -5,7 +5,7 @@ const paymentSchema = new mongoose.Schema({
     fromUserId: {  
         type: String,
         
-        required: true
+        
     },
     toUserId: {
         type: String,

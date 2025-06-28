@@ -3,21 +3,26 @@ import React from 'react'
 import { useState } from 'react'
 import Script from 'next/script'
 import { createOrder } from '@/actions/Useraction'
+import { useSession } from 'next-auth/react'
 
 
 const Payment = () => {
     const [paymentform, setPaymentform] = useState({name: "", amount: "", message: ""})
     const [toggle, setToggle] = useState(false)
+    const { data: session } = useSession()
 
     const handleChange = (e) => {
         setPaymentform({ ...paymentform, [e.target.name]: e.target.value })
         console.log(paymentform)
     }
 
-const pay=(amount,orderId)=>{
-    
+const pay=async (amount)=>{
+    let a= await(createOrder(amount, session.user.name, paymentform))
+    let orderId = a.id; // This is the Order ID returned by Razorpay
+
+    console.log(orderId)
 var options = {
-    "key": process.env.RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+    "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
     "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     "currency": "INR",
     "name": "Acme Corp", //your business name
@@ -39,8 +44,7 @@ var options = {
 };
 
 var rzp1 = new Razorpay(options);
-
-    rzp1.open();
+rzp1.open();
     
 
 }
@@ -63,7 +67,7 @@ var rzp1 = new Razorpay(options);
     font-medium rounded-lg  px-3 py-2.5 text-center
     transition-colors duration-200 ease-in-out text-xl'>₹ Donate</button>
         {/* <!-- Main modal --> */}
-<div id="crud-modal" tabindex="-1" aria-hidden="true" className={` overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
+<div id="crud-modal" tabIndex="-1" aria-hidden="true" className={` overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
     <div className="relative p-4 w-full max-w-md max-h-full">
         {/* <!-- Modal content --> */}
         <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
@@ -97,7 +101,7 @@ var rzp1 = new Razorpay(options);
                             <option value="100">₹100</option>
                             <option value="500"> ₹500</option>
                             <option value="1000" >₹1000</option>
-                            <option value="1500" >₹10000</option>
+                            <option value="1500" >₹1500</option>
                            
                         </select>
                     </div>
@@ -106,7 +110,7 @@ var rzp1 = new Razorpay(options);
                         <textarea id="message" name='message' onChange={handleChange} value={paymentform.message} rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="How is your day today"></textarea>                    
                     </div>
                 </div>
-                <button type="button" id='rzp-button1' className="text-white inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button type="button" onClick={()=>{pay(Number.parseInt(paymentform.amount))}} id='rzp-button1' className="text-white inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                    
                     Donate
                 </button>
