@@ -22,8 +22,22 @@ export const createOrder = async (amount, to_username, paymentform) => {
             key2: "value2"
         }
     };
-   let x= await instance.orders.create(options)
-    await Payment.create({oid:x.id, amount: amount, toUserId:to_username , name:paymentform.name,message:paymentform.message})
+   let x= await instance.orders.create(options)  
+    await Payment.create({oid:x.id, amount: amount, toUserId:to_username ,fromUserId:paymentform.name,message:paymentform.message})
 
     return x;
+}
+
+export const fetchuser = async (username) => {
+    await connectDb()
+    let u = await User.findOne({ username: username })
+    let user = u.toObject({ flattenObjectIds: true })
+    return user
+}
+
+export const fetchpayments = async (username) => {
+    await connectDb()
+    // find all payments sorted by decreasing order of amount and flatten object ids
+    let p = await Payment.find({ to_user: username, done:true }).sort({ amount: -1 }).limit(10).lean()
+    return p
 }

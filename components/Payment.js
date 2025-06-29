@@ -2,7 +2,7 @@
 import React from 'react'
 import { useState } from 'react'
 import Script from 'next/script'
-import { createOrder } from '@/actions/Useraction'
+import { createOrder,fetchuser,fetchpayments } from '@/actions/Useraction'
 import { useSession } from 'next-auth/react'
 
 
@@ -10,10 +10,23 @@ const Payment = () => {
     const [paymentform, setPaymentform] = useState({name: "", amount: "", message: ""})
     const [toggle, setToggle] = useState(false)
     const { data: session } = useSession()
+    const [currentUser, setCurrentUser] = useState({})
+     const [payments, setPayments] = useState([])
 
+
+     useEffect(() => {
+        getData()
+    }, [])
+    
     const handleChange = (e) => {
         setPaymentform({ ...paymentform, [e.target.name]: e.target.value })
         console.log(paymentform)
+    }
+    const getData= async () => {
+        let user= await fetchuser(session.user.name)
+        setCurrentUser(user)
+        let pay= await fetchpayments(session.user.name)
+        setPayments(pay)
     }
 
 const pay=async (amount)=>{
@@ -29,7 +42,7 @@ var options = {
     "description": "Test Transaction",
     "image": "https://example.com/your_logo",
     "order_id": orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "callback_url": `${process.env.URL}/api/razorpay`,
+    "callback_url": `${process.env.NEXT_PUBLIC_URL}/api/razorpay`,
     "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
         "name": "Gaurav Kumar", //your customer's name
         "email": "gaurav.kumar@example.com",
