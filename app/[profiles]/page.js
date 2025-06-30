@@ -26,10 +26,7 @@ const Profiles = async ({ params }) => {
         <div className='text-slate-500'>I am a lazy coder</div>
         <div>18,732 members • 99 Posts • $18,270/release</div>
       </div>
-      <div className='flex justify-center mt-3 gap-2'>
-        <button className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600'>Follow</button>
-        <Payment />
-      </div>
+      <Payment />
 
 
 
