@@ -153,7 +153,7 @@ const Payment = () => {
 
                     <AnimatedContent
                         distance={150}
-                        direction="vertical"
+                        direction="horizontal"
                         reverse={true}
                         duration={1.2}
                         ease="power3.out"
@@ -165,15 +165,19 @@ const Payment = () => {
                     >
                         <div>Thanks Encourager</div>
 
-                    </AnimatedContent>
-                </FadeContent>
+                    
                 <ul>
-                    {payments.map((payment, index) => (
-                        <li key={index} className='text-white dark:text-gray-200 p-2 border-b border-gray-300 dark:border-gray-600'>
+                    {payments.map((payment, index) =>{ 
+                        let toggle=index % 2 === 0 ;
+                        return(
+                        
+                        <li key={index} className={`${toggle?"bg-gray-500":"bg-gray-800"} text-white dark:text-gray-200 p-4 border-b border-gray-300 dark:border-gray-600`}>
                             <strong>{payments.fromUserId}</strong> donated <span className='text-green-500'>₹{payment.amount}</span> with message: <span className='italic text-gray-600'>"{payment.message}"</span>
                         </li>
-                    ))}
+                    )})}
                 </ul>
+                </AnimatedContent>
+                </FadeContent>
             </div>
         </div>
 

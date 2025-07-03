@@ -45,3 +45,10 @@ export const fetchpayments = async (username) => {
         
     }));
 }
+
+export const updateProfile = async (e, username) => {
+    e.preventDefault()
+    await connectDb()
+    let u = await User.findOneAndUpdate({ username: username }, {
+        name: e.target.name.value})  
+}

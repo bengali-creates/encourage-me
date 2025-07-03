@@ -1,9 +1,10 @@
 import React from 'react'
+import Dashboard from '@/components/Dashboard'
 
-const Dashboard = () => {
+const DashboardMain = () => {
   return (
-    <div className='text-white'>Dashboard</div>
+    <div className='text-white'><Dashboard/></div>
   )
 }
 
-export default Dashboard
+export default DashboardMain

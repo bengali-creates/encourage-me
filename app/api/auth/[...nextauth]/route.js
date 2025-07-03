@@ -30,7 +30,7 @@ const handler= NextAuth({
           name: user.name,
           username: profile.login,
           email: user.email,
-          profileimage: user.image,
+          profilepic: user.image,
           
         });
         await newUser.save();
