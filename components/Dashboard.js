@@ -13,18 +13,20 @@ const Dashboard = () => {
     const [form, setform] = useState({})
 
     useEffect(() => {
-        console.log(session)
-
+        
+        if(update=="loading") return;
+        console.log(session) // Wait until session is loaded
         if (!session) {
             router.push('/login')
         }
         else {
             getData()
         }
-    }, [])
+    }, [session, update]);
 
     const getData = async () => {
         let u = await fetchuser(session.user.name)
+        console.log('u', u)
         setform(u)
     }
 

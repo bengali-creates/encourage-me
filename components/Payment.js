@@ -6,20 +6,43 @@ import { createOrder, fetchuser, fetchpayments } from '@/actions/Useraction'
 import { useSession } from 'next-auth/react'
 import AnimatedContent from '@/animations/Scroll-reveal'
 import FadeContent from '@/animations/Fade'
+import { useSearchParams } from 'next/navigation'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Bounce } from 'react-toastify';
+import { useRouter } from 'next/navigation'
 
-const Payment = () => {
+const Payment = ({profiles}) => {
     const [paymentform, setPaymentform] = useState({ name: "", amount: "", message: "" })
     const [toggle, setToggle] = useState(false)
     const { data: session } = useSession()
     const [currentUser, setCurrentUser] = useState({})
     const [payments, setPayments] = useState([])
-
+    const searchParams=useSearchParams()
+    const router = useRouter()
 
     useEffect(() => {
         if (session && session.user) {
             getData();
         }
     }, [session])
+
+    useEffect(() => {
+        if (searchParams.get('paymentStatus') == 'success') {
+      toast('Profile Updated', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+            });
+        }router.push(`/${profiles}`)
+    }, [])
+    
 
     const handleChange = (e) => {
         setPaymentform({ ...paymentform, [e.target.name]: e.target.value })
@@ -40,11 +63,14 @@ const Payment = () => {
 
     const pay = async (amount) => {
         let a = await (createOrder(amount, session.user.name, paymentform))
+
         let orderId = a.id; // This is the Order ID returned by Razorpay
         console.log('first', session.user.name)
         console.log(orderId)
+        let user = await fetchuser(session.user.name)
+        console.log(user.razorpayid, user.razorpaysecret)
         var options = {
-            "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+            "key": user.razorpayid || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
             "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
             "name": "Acme Corp", //your business name
@@ -77,7 +103,27 @@ const Payment = () => {
 
 
         <div>
+           
             <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
+             <ToastContainer /> 
+            <div className='w-full'>
+      <div className='relative'>
+        <div id='bg-cover' className='h-[65vh] w-full overflow-hidden'>
+          <video className="w-full h-full object-cover" autoPlay loop muted  >
+            <source src="https://v1.pinimg.com/videos/mc/720p/0f/3a/40/0f3a40f8053cb24b8599b44bf7db1693.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+
+          </video>
+        </div>
+        <div id='profile-img' className='absolute inset-0 top-11/12 flex items-center justify-center pointer-events-none' >
+          <img src="https://avatars.githubusercontent.com/u/175535857?v=4" width={90} alt="" className="" />
+        </div>
+      </div>
+      <div id='info' className='text-center mt-10 text-white '>
+        <h1 className='text-3xl'>@{profiles}</h1>
+        <div className='text-slate-500'>I am a lazy coder</div>
+        <div>18,732 members • 99 Posts • $18,270/release</div>
+      </div>
 
             <div className='flex justify-center mt-3 gap-2'>
                 <button className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600'>Follow</button>
@@ -136,7 +182,7 @@ const Payment = () => {
                                         <textarea id="message" name='message' onChange={handleChange} value={paymentform.message} rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="How is your day today"></textarea>
                                     </div>
                                 </div>
-                                <button type="button" onClick={() => { pay(Number.parseInt(paymentform.amount)) }} id='rzp-button1' className="text-white inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button type="button" onClick={() => { pay(Number.parseInt(paymentform.amount)) }} id='rzp-button1' className={`text-white inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${paymentform.amount ? "" : "cursor-not-allowed opacity-50"}`}>
 
                                     Donate
                                 </button>
@@ -171,8 +217,8 @@ const Payment = () => {
                         let toggle=index % 2 === 0 ;
                         return(
                         
-                        <li key={index} className={`${toggle?"bg-gray-500":"bg-gray-800"} text-white dark:text-gray-200 p-4 border-b border-gray-300 dark:border-gray-600`}>
-                            <strong>{payments.fromUserId}</strong> donated <span className='text-green-500'>₹{payment.amount}</span> with message: <span className='italic text-gray-600'>"{payment.message}"</span>
+                        <li key={index} className={`${toggle?"bg-gray-500":"bg-gray-800"} text-white dark:text-gray-200 p-4 border-b border-gray-300 dark:border-gray-600 tracking-wider md:tracking-tight `}>
+                            <span className='text-orange-400'><strong>{payment.fromUserId}</strong></span> donated <span className='text-green-500'>₹{payment.amount}</span> with message: <span className='italic text-amber-300'>"{payment.message}"</span>
                         </li>
                     )})}
                 </ul>
@@ -180,7 +226,7 @@ const Payment = () => {
                 </FadeContent>
             </div>
         </div>
-
+</div>
 
     )
 }

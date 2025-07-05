@@ -8,9 +8,10 @@ export const createOrder = async (amount, to_username, paymentform) => {
     await connectDb()
     console.log("KEY_ID:", process.env.RAZORPAY_KEY_ID);
     console.log("KEY_SECRET:", process.env.RAZORPAY_KEY_SECRET);
+    let user= await User.findOne({ username: to_username })
     const instance = new Razorpay({
-        key_id: process.env.RAZORPAY_KEY_ID,
-        key_secret: process.env.RAZORPAY_KEY_SECRET,
+        key_id: user.razorpayid || process.env.RAZORPAY_KEY_ID,
+        key_secret:user.razorpaysecret || process.env.RAZORPAY_KEY_SECRET,
     });
 
     let options = {
@@ -47,8 +48,9 @@ export const fetchpayments = async (username) => {
 }
 
 export const updateProfile = async (e, username) => {
-    e.preventDefault()
+   
     await connectDb()
-    let u = await User.findOneAndUpdate({ username: username }, {
-        name: e.target.name.value})  
+    let data=Object.fromEntries(e)
+    // if()
+    let u = await User.findOneAndUpdate({ username: username },data)  
 }
