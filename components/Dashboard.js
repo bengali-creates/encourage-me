@@ -15,7 +15,7 @@ const Dashboard = () => {
     useEffect(() => {
         
         if(update=="loading") return;
-        console.log(session) // Wait until session is loaded
+       // Wait until session is loaded
         if (!session) {
             router.push('/login')
         }
@@ -25,8 +25,8 @@ const Dashboard = () => {
     }, [session, update]);
 
     const getData = async () => {
-        let u = await fetchuser(session.user.name)
-        console.log('u', u)
+        let u = await fetchuser(session.user.name,session.user.email)
+        
         setform(u)
     }
 
@@ -36,7 +36,7 @@ const Dashboard = () => {
 
     const handleSubmit = async (e) => {
 
-        let a = await updateProfile(e, session.user.name)
+        let a = await updateProfile(e, session.user.name, session.user.email)
         toast('Profile Updated', {
             position: "top-right",
             autoClose: 5000,

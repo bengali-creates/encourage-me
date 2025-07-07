@@ -46,7 +46,7 @@ const Payment = ({profiles}) => {
 
     const handleChange = (e) => {
         setPaymentform({ ...paymentform, [e.target.name]: e.target.value })
-        console.log(paymentform)
+        
     }
     const getData = async () => {
         let User = session.user.name
@@ -54,21 +54,19 @@ const Payment = ({profiles}) => {
         setPayments(pay)
 
         let user = await fetchuser(User)
-        console.log(user)
+       
         setCurrentUser(user)
 
 
-        console.log(payments[0].fromUserId)
     }
 
     const pay = async (amount) => {
         let a = await (createOrder(amount, session.user.name, paymentform))
 
         let orderId = a.id; // This is the Order ID returned by Razorpay
-        console.log('first', session.user.name)
-        console.log(orderId)
+       
         let user = await fetchuser(session.user.name)
-        console.log(user.razorpayid, user.razorpaysecret)
+        
         var options = {
             "key": user.razorpayid || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
             "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -125,7 +123,7 @@ const Payment = ({profiles}) => {
         <div>18,732 members • 99 Posts • $18,270/release</div>
       </div>
 
-            <div className='flex justify-center mt-3 gap-2'>
+            <div className='flex justify-center mt-3 gap-2 mb-5'>
                 <button className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600'>Follow</button>
 
                 {/* <!-- Modal toggle --> */}
@@ -209,7 +207,7 @@ const Payment = ({profiles}) => {
                         threshold={0.2}
                         delay={0.3}
                     >
-                        <div>Thanks Encourager</div>
+                        <div className='flex justify-center items-center py-2.5 text-2xl font-bold'>Thanks Encourager</div>
 
                     
                 <ul>

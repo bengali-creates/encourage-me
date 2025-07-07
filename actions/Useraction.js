@@ -6,8 +6,7 @@ import User from "@/models/User"
 
 export const createOrder = async (amount, to_username, paymentform) => {
     await connectDb()
-    console.log("KEY_ID:", process.env.RAZORPAY_KEY_ID);
-    console.log("KEY_SECRET:", process.env.RAZORPAY_KEY_SECRET);
+   
     let user= await User.findOne({ username: to_username })
     const instance = new Razorpay({
         key_id: user.razorpayid || process.env.RAZORPAY_KEY_ID,
@@ -29,12 +28,18 @@ export const createOrder = async (amount, to_username, paymentform) => {
     return x;
 }
 
-export const fetchuser = async (username) => {
-    await connectDb()
-    let u = await User.findOne({ username: username })
-    let user = u.toObject({ flattenObjectIds: true })
-    return user
-}
+export const fetchuser = async (username,email) => {
+    await connectDb();
+    // Try to find by username first
+    let u = await User.findOne({ username: username });
+    // If not found, try by email
+    if (!u) {
+        u = await User.findOne({ email: email });
+    }
+    
+    let user = u.toObject({ flattenObjectIds: true });
+    return user;
+};
 
 export const fetchpayments = async (username) => {
     await connectDb()
@@ -47,10 +52,17 @@ export const fetchpayments = async (username) => {
     }));
 }
 
-export const updateProfile = async (e, username) => {
+export const updateProfile = async (e,username,email) => {
    
     await connectDb()
     let data=Object.fromEntries(e)
     // if()
-    let u = await User.findOneAndUpdate({ username: username },data)  
+    let u = await User.findOne({ username: username });
+    // If not found, try by email
+        await User.updateOne({ username: username }, data);
+    if (!u) {
+        u = await User.findOne({ email: email });
+        await User.updateOne({ email: email }, data);
+    }
+    // let u = await User.findOneAndUpdate({ username: username },data)  
 }

@@ -2,13 +2,34 @@
 import React  from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
 import Link from "next/link"
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { useRouter } from 'next/navigation'
+// import connectDb from '@/db/connetdb'
+// import User from '@/models/User'
+import { fetchuser } from '@/actions/Useraction'
 
 const Navbar = () => {
-  const { data: session } = useSession()
+  const { data: session,update } = useSession()
   const [dropdown, setDropdown] = useState(false)
+   const [form, setform] = useState({})
   
+      useEffect(() => {
+          
+          if(update=="loading") return;
+          // Wait until session is loaded
+          if (!session) {
+              
+          }
+          else {
+              getData()
+          }
+      }, [session, update]);
+  
+      const getData = async () => {
+          let u = await fetchuser(session.user.name,session.user.email)
+          
+          setform(u)
+      }
 
   return (
     <nav className='fixed w-full flex justify-between items-center p-3 text-white backdrop-blur-xs shadow-indigo-300 shadow-lg/55 z-100'>
@@ -16,11 +37,10 @@ const Navbar = () => {
         <Link href={"/"}> Encourage Me</Link>
       </div>
       <ul className='flex space-x-4'>
-        <li><Link href="/">Home</Link></li>
-        <li><Link href="/about">About</Link></li>
-        <li><Link href="/contact">Contact</Link></li>
-        <li><Link href="/project">Project</Link></li>
-        <li><Link href="/dashboard">Dashboard</Link></li>
+        <li className='md:block hidden'><Link href="/">Home</Link></li>
+        <li className='md:block hidden'><Link href="/about">About</Link></li>
+        <li className='md:block hidden'><Link href="/contact">Contact</Link></li>
+        <li className='md:block hidden'><Link href="/dashboard">Dashboard</Link></li>
 
         {session ? (
           <>
@@ -39,13 +59,17 @@ const Navbar = () => {
               </div>
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" >
                 <li>
+                  <Link href="/" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Home</Link>
+                </li>
+                <li>
                   <Link href="/dashboard" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</Link>
                 </li>
-                <li>
-                  <Link href={`/${(session.user.name)}`} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Your Page</Link>
+                <li onClick={()=>{console.log('clicked');
+                }}>
+                  <Link href={`/${(form.username)}`} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Your Page</Link>
                 </li>
                 <li>
-                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</Link>
+                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">About us</Link>
                 </li>
               </ul>
               <div className="py-2">

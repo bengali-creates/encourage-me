@@ -1,12 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import TrueFocus from "@/animations/Truefocus";
 
 export default function Home() {
   return (
      <>
       <div className="flex justify-center flex-col gap-4 items-center text-white h-[44vh] px-5 md:px-0 text-xs md:text-base  ">
-        <div className="font-bold flex gap-6 md:gap-20 md:text-5xl justify-center items-center text-3xl">Encourage Me</div>
+        
+
+<div className="font-bold flex gap-6 md:gap-20 md:text-5xl justify-center items-center text-3xl"><TrueFocus 
+sentence="Encourage Me"
+manualMode={false}
+blurAmount={5}
+borderColor="red"
+animationDuration={1}
+pauseBetweenAnimations={1}
+/></div>
         <p className="text-center md:text-left">
           A crowdfunding platform for creators to fund their projects. 
           
