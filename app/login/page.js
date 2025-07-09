@@ -5,9 +5,10 @@ import {useRouter} from 'next/navigation'
 
 const Login = () => {
     const { data: session } = useSession()
+    const router = useRouter()
     if (session) {
         // If user is already logged in, redirect to dashboard
-        useRouter().push('/dashboard')
+        router.push('/dashboard')
     }
   return (
       <div className='text-white py-14 container mx-auto'>

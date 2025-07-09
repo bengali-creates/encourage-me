@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Bounce } from 'react-toastify';
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 const Payment = ({profiles}) => {
     const [paymentform, setPaymentform] = useState({ name: "", amount: "", message: "" })
@@ -23,6 +24,17 @@ const Payment = ({profiles}) => {
 
     useEffect(() => {
         if (session && session.user) {
+            const getData = async () => {
+        let User = session.user.name
+        let pay = await fetchpayments(User)
+        setPayments(pay)
+
+        let user = await fetchuser(User)
+       
+        setCurrentUser(user)
+
+
+    }
             getData();
         }
     }, [session])
@@ -41,24 +53,14 @@ const Payment = ({profiles}) => {
             transition: Bounce,
             });
         }router.push(`/${profiles}`)
-    }, [])
+    }, [profiles, searchParams, router])
     
 
     const handleChange = (e) => {
         setPaymentform({ ...paymentform, [e.target.name]: e.target.value })
         
     }
-    const getData = async () => {
-        let User = session.user.name
-        let pay = await fetchpayments(User)
-        setPayments(pay)
-
-        let user = await fetchuser(User)
-       
-        setCurrentUser(user)
-
-
-    }
+    
 
     const pay = async (amount) => {
         let a = await (createOrder(amount, session.user.name, paymentform))
@@ -114,7 +116,9 @@ const Payment = ({profiles}) => {
           </video>
         </div>
         <div id='profile-img' className='absolute inset-0 top-11/12 flex items-center justify-center pointer-events-none' >
-          <img src="https://avatars.githubusercontent.com/u/175535857?v=4" width={90} alt="" className="" />
+          <Image src="https://avatars.githubusercontent.com/u/175535857?v=4" width={90} height={90
+
+          } alt="" className="" />
         </div>
       </div>
       <div id='info' className='text-center mt-10 text-white '>
@@ -157,7 +161,7 @@ const Payment = ({profiles}) => {
                             <form className="p-4 md:p-5">
                                 <div className="grid gap-4 mb-4 grid-cols-2">
                                     <div className="col-span-2">
-                                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Encourager's Name</label>
+                                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Encourager&apos;s Name</label>
                                         <input type="text" onChange={handleChange} value={paymentform.name} name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="" />
                                     </div>
                                     <div className="col-span-2 sm:col-span-1">
@@ -216,7 +220,7 @@ const Payment = ({profiles}) => {
                         return(
                         
                         <li key={index} className={`${toggle?"bg-gray-500":"bg-gray-800"} text-white dark:text-gray-200 p-4 border-b border-gray-300 dark:border-gray-600 tracking-wider md:tracking-tight `}>
-                            <span className='text-orange-400'><strong>{payment.fromUserId}</strong></span> donated <span className='text-green-500'>₹{payment.amount}</span> with message: <span className='italic text-amber-300'>"{payment.message}"</span>
+                            <span className='text-orange-400'><strong>{payment.fromUserId}</strong></span> donated <span className='text-green-500'>₹{payment.amount}</span> with message: <span className='italic text-amber-300'>&quot;{payment.message}&quot;</span>
                         </li>
                     )})}
                 </ul>
