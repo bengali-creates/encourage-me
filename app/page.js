@@ -44,17 +44,17 @@ pauseBetweenAnimations={1}
   <h2 className="text-3xl font-bold text-center mb-14">Your Fans can buy you a Chai</h2>
   <div className="flex gap-5 justify-around">
     <div className="item space-y-3 flex flex-col items-center justify-center">
-      <Image className="bg-slate-400 rounded-full p-2 text-black" width={88} src="/man.gif" alt="" />
+      <Image className="bg-slate-400 rounded-full p-2 text-black" width={88} height={88} src="/man.gif" alt="" />
       <p className="font-bold text-center">You can Encourage me </p>
       <p className="text-center">Encourage me to past push my limits</p>
     </div>
     <div className="item space-y-3 flex flex-col items-center justify-center">
-      <Image className="bg-slate-400 rounded-full p-2 text-black" width={88} src="/coin.gif" alt="" />
+      <Image className="bg-slate-400 rounded-full p-2 text-black" width={88} height={88} src="/coin.gif" alt="" />
       <p className="font-bold text-center">You can  contribute</p>
       <p className="text-center">You can support me financially</p>
     </div>
     <div className="item space-y-3 flex flex-col items-center justify-center">
-      <Image className="bg-slate-400 rounded-full p-2 text-black" width={88} src="/group.gif" alt="" />
+      <Image className="bg-slate-400 rounded-full p-2 text-black" width={88} height={88} src="/group.gif" alt="" />
       <p className="font-bold text-center">You can collaborate with me </p>
       <p className="text-center">I am waiting for our collaboration </p>
     </div>

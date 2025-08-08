@@ -32,7 +32,7 @@ const Payment = ({profiles}) => {
         let user = await fetchuser(User)
        
         setCurrentUser(user)
-
+console.log('curr', currentUser.username)
 
     }
             getData();
@@ -63,11 +63,11 @@ const Payment = ({profiles}) => {
     
 
     const pay = async (amount) => {
-        let a = await (createOrder(amount, session.user.name, paymentform))
+        let a = await (createOrder(amount, currentUser, paymentform))
 
         let orderId = a.id; // This is the Order ID returned by Razorpay
        
-        let user = await fetchuser(session.user.name)
+        let user = await fetchuser(currentUser.username, currentUser.email)
         
         var options = {
             "key": user.razorpayid || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard

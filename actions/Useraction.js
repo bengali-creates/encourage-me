@@ -8,9 +8,11 @@ export const createOrder = async (amount, to_username, paymentform) => {
     await connectDb()
    
     let user= await User.findOne({ username: to_username })
+        
+    
     const instance = new Razorpay({
         key_id: user.razorpayid || process.env.RAZORPAY_KEY_ID,
-        key_secret:user.razorpaysecret || process.env.RAZORPAY_KEY_SECRET,
+        key_secret: user.razorpaysecret || process.env.RAZORPAY_KEY_SECRET,
     });
 
     let options = {
